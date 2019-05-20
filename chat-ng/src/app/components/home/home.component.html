@@ -1,0 +1,103 @@
+<div class="container">
+  <div class="row">
+
+    <div class="col">
+      <a class="btn btn-success" (click)="logout()">Logout</a>
+
+      <div *ngFor="let message of messages">
+        {{message}}
+      </div>
+
+      <div *ngFor="let item of processedImages">
+        <img src="{{item.imageDataUrl}}" height="70" width="100">
+      </div>
+
+      <b *ngIf="showTitle" >Compressed Image List</b>
+      <div *ngFor="let item of processedImages">
+        <img src="{{item.compressedImage.imageDataUrl}}" height="70" width="100">
+      </div>
+
+
+      <!-- <img [src]="image" /> -->
+      <input [(ngModel)]="to" placeholder="To (click on user)" (click)="sendMessageTo()" />
+      <input [(ngModel)]="message" placeholder="Message" (keyup)="$event.keyCode == 13 && sendMessageTo()" />
+      <input [(ngModel)]="path" type="file" id="file" accept="audio/*, image/*" (change)="changeListener($event)" [disabled]="!to">
+      <button (click)="sendMessageTo()" [disabled]="!to || !message">Send</button>
+      <button (click)="console()">print</button>
+
+      <div class="users" *ngIf="users">
+        <div *ngFor="let user of users" (click)="to=user.socketId; touser=user.username">
+          <div class="rounded" *ngIf="user.online" style="width: .5rem; height: .5rem; background-color: green;display: inline-block;"></div> {{ user.username}}
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div *ngIf="users.length==0" class="spinner-border"  role="status"><span class="sr-only">Loading...</span></div>
+      <div class="row" style="height: 20rem;  width: 14rem; padding-bottom: 2rem;" *ngFor="let user of users">
+        <div class="col border" (click)="focus(user.username)" style="height: 17rem; overflow: auto;" >
+          <div class="chat-header">{{ user.username | titlecase }}</div>
+          <div *ngFor="let chats of user.chats">
+              <!-- <div *ngIf="chats.from==username" style="float: right">{{ chats.from }}</div>
+              <div *ngIf="chats.from!=username" style="float: left">{{ chats.from }}</div> -->
+
+              <!-- <div *ngIf="!chats.read" style="color: red">{{ chats.from }}: {{ chats.message }}</div>
+              <div *ngIf="chats.read">{{ chats.from }}: {{ chats.message }}</div> -->
+
+              <div>
+                <div *ngIf="chats.from==user.username" [ngClass]="chats.read?'read':'unread'" class="box sb2"><div *ngIf="chats.message">{{ chats.message }}</div>
+                <div *ngIf="chats.base64">
+                    <audio *ngIf="chats.audio" controls [src]="chats.base64 | trust"></audio>
+                    <img *ngIf="chats.image" [src]="chats.base64" (click)="preview($event)">
+                  </div></div>
+                <div *ngIf="chats.from!=user.username" class="box sb1">
+                  <div *ngIf="chats.message">{{ chats.message }}</div>
+                  <div *ngIf="chats.base64">
+                    <audio *ngIf="chats.audio" controls [src]="chats.base64 | trust"></audio>
+                    <img *ngIf="chats.image" [src]="chats.base64" (click)="preview($event)">
+                  </div>
+                </div>
+              </div>
+
+              <!-- <div *ngIf="chats.status=='sent' && chats.read==false">
+                  <i class="fas fa-check"></i>
+              </div>
+
+              <div *ngIf="chats.status=='sent' && chats.read">
+                  <i class="fas fa-check-double"></i>
+              </div> -->
+
+              <!-- <div class="box sb1">I'm speech bubble</div>
+              <div class="box sb2">I'm speech bubble</div> -->
+
+          </div>
+          <!-- user.chats.length - 1 -->
+          <div *ngIf="user.chats.length">
+          <div *ngIf="user.chats[user.chats.length - 1].status=='sent' && user.chats[user.chats.length - 1].read==false">
+              <i class="fas fa-check"></i>
+          </div>
+
+          <div *ngIf="user.chats[user.chats.length - 1].status=='sent' && user.chats[user.chats.length - 1].read">
+              <i class="fas fa-check-double"></i>
+          </div>
+          </div>
+
+        </div><hr>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- The Close Button -->
+  <span class="close">&times;</span>
+
+  <!-- Modal Content (The Image) -->
+  <img class="modal-content" id="img01">
+
+  <!-- Modal Caption (Image Text) -->
+  <div id="caption"></div>
+</div>

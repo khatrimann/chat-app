@@ -1,0 +1,46 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+      <div class="card card-signin my-5">
+        <div class="card-body">
+          <h5 class="card-title text-center">Sign In</h5>
+          <form [formGroup]="loginForm" class="form-signin" >
+            <div class="form-label-group">
+              <input type="text" id="username" class="form-control" placeholder="username" formControlName="username" required autofocus>
+              <label for="username">Username</label>
+            </div>
+
+            <div class="form-label-group">
+              <input type="password" id="inputPassword" class="form-control" placeholder="Password" formControlName="password" required>
+              <label for="inputPassword">Password</label>
+            </div>
+
+            <div *ngIf="signup">
+              <div class="form-label-group">
+                <input type="text" id="firstname" class="form-control" placeholder="Firstname" formControlName="firstname" required>
+                <label for="firstname">First Name</label>
+              </div>
+
+              <div class="form-label-group">
+                <input type="text" id="lastname" class="form-control" placeholder="Lastname" formControlName="firstname" required>
+                <label for="lastname">Last Name</label>
+              </div>
+            </div>
+
+            <div class="custom-control custom-checkbox mb-3">
+              <input type="checkbox" class="custom-control-input" id="customCheck1">
+              <label class="custom-control-label" for="customCheck1">Remember password</label>
+            </div>
+            <a *ngIf="!signup" class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" (click)="login()">Sign in</a>
+            <a *ngIf="signup" (click)="signUp()" class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign Up</a>
+            <p *ngIf="!signup">New? <span><a (click)="signup = !signup" >Sign up?</a></span></p>
+            <p *ngIf="signup">Registered? <span><a (click)="signup = !signup" >Sign in?</a></span></p>
+            <hr class="my-4">
+            <button class="btn btn-lg btn-google btn-block text-uppercase" type="submit"><i class="fab fa-google mr-2"></i> Sign in with Google</button>
+            <button class="btn btn-lg btn-facebook btn-block text-uppercase" type="submit"><i class="fab fa-facebook-f mr-2"></i> Sign in with Facebook</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
